@@ -1,0 +1,128 @@
+﻿
+class BinTree:
+    root=None
+    duplicates = []
+
+
+
+    def write(self):
+        self.skriv(self.root)
+
+    def insert(self,newValue):
+        self.root = self.put(self.root,newValue)
+        return self.root
+
+    def exists(self, word):
+        return self.finns(self.root, word)
+        
+    def finns(self, root, word):
+        h = False
+        if root != None:
+            if root.left != None:
+                h = self.finns(root.left, word)
+          
+            if root.value.strip() == word:
+                h = True
+                    
+            if root.right != None and h == False:
+                h = self.finns(root.right, word)
+
+        return h
+
+        
+
+    def put(self, treeNode, newValue):
+        newNode = BinaryNode(newValue, None, None)
+        if treeNode == None:
+            return newNode
+        elif (newValue > treeNode.value):
+            
+            treeNode.right = self.put(treeNode.right, newValue)
+            return treeNode
+        else:
+            if newValue == treeNode.value:
+                self.duplicates.append(newValue)
+                return treeNode
+            else:
+                treeNode.left = self.put(treeNode.left, newValue)
+                return treeNode
+        
+
+
+    def skriv(self, root):
+        if root != None:
+            if root.left != None:
+                self.skriv(root.left)
+            print root.value
+                
+            if root.right != None:
+                self.skriv(root.right)
+
+        
+       
+
+
+class BinaryNode:
+    value = None
+    left = None
+    right = None
+
+    def __init__ (self, value, left, right):
+        self.value = value
+        self.left = left
+        self.right = right
+
+
+def main():
+
+##Läs in den svenska filen
+    
+    namn = raw_input('Vad heter den svenska filen')
+    namn = str(namn)
+    f = open(namn)
+    q = BinTree()
+    for line in f:
+        line = line.strip()
+        q.insert(line)
+
+    print q.duplicates
+    #q.duplicates = []
+    
+
+##Läs in den engelska filen
+
+    name = raw_input('Vad heter den engelska filen')
+    name = str(name)
+    f = open(name)
+    eng_tree = BinTree()
+    eng_tree.duplicates = []
+    
+    for line in f:
+        line = line.strip()
+        for word in line.split():
+            word = word.rstrip(",")
+            if not eng_tree.exists(word):
+                
+                if q.exists(word):
+                    print word
+                eng_tree.insert(word)
+
+    
+
+
+
+    
+  
+    #q.write()
+    #eng_tree.write()
+    #print dubbletter
+    #print eng_tree.duplicates
+    #h = q.exists("mur")
+    
+    #print h
+        
+
+if __name__ == "__main__":
+    main()
+    
+
